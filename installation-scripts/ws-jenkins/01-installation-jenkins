@@ -1,0 +1,32 @@
+# 1. Install docker 
+docker --version 
+
+
+# 2. Create a jenkins network 
+docker network create jenkins 
+
+
+# 3. Create a docker jenkins container 
+docker run --name jenkins-docker --rm --detach --privileged --network jenkins --network-alias docker --env DOCKER_TLS_CERTDIR=/certs --volume jenkins-docker-certs:/certs/client --volume jenkins:/var/jenkins_home --publish 2376:2376 docker:dind --storage-driver overlay2 
+# OR 
+docker run -p 8080:8080 -p 50000:50000 --network jenkins --privileged -d -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts 
+#OR 
+docker run --name jenkins-xsif --rm --detach --privileged --network jenkins --network-alias docker --env DOCKER_TLS_CERTDIR=/certs --volume jenkins-docker-certs:/certs/client --volume jenkins:/var/jenkins_home --publish 2376:2376 -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts 
+
+
+# 4. Get password of jenkins by: 
+docker logs [CONTAINER-ID] 
+# OR 
+docker container exec [CONTAINER-ID] sh -c "cat /var/jenkins_home/secrets/initialAdminPassword" 
+# OR 
+cat /var/lib/docker/volumes/jenkins/_data/secrets/initialAdminPassword 
+
+
+# 5. Access dashboard using localhost OR IP 
+# localhost:8080 
+
+
+# 6. 
+
+
+
